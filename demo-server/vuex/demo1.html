@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../node_modules/vue/dist/vue.js"></script>
+    <script src="../../node_modules/vuex/dist/vuex.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h2>{{msg}}</h2>
+    <input type="button" value="+" @click="add">
+    <input type="button" value="-" @click="decre">
+    <counter></counter>
+  </div>
+
+  <script>
+    const counter = {
+      template:`
+        <div>{{count}}</div>
+      `,
+      /*此处必须用计算属性实时的更新组件中count的状态值*/
+      computed:{
+        count() {
+          return this.$store.state.count;
+        }
+      }
+    }
+    const store = new Vuex.Store({
+      state:{
+        count:10
+      },
+      mutations: {
+        increment(state) {
+          state.count++;
+        },
+        decrement(state) {
+          state.count--;
+        }
+      }
+    })
+
+    new Vue({
+      el:"#app",
+      store,
+      data:{
+        msg:'vuex的使用'
+      },
+      components:{
+        counter
+      },
+      methods:{
+        add(){
+          this.$store.commit('increment')
+        },
+        decre(){
+          this.$store.commit('decrement')
+        }
+      }
+    })
+  </script>
+</body>
+</html>
